@@ -169,6 +169,20 @@ void Futbolino::manageScoreIncrement(){
 
 		_screenA->setAnimation(end, callbackRestart);
 		_screenB->setAnimation(end);
+	} else if (_golsA == 6 && _lastScored == A) {
+		// La bola puta no entra aqui
+		showScoreInScreens();
+		char* txtA = (char*)TXT_WIN_A;
+		char* txtB = (char*)TXT_LOOSE;
+		_screenA->setAnimation(txtA);
+		_screenB->setAnimation(txtB);
+	} else if (_golsB == 6 && _lastScored == B) {
+		// La bola puta no entra aqui
+		showScoreInScreens();
+		char* txtA = (char*)TXT_LOOSE;
+		char* txtB = (char*)TXT_WIN_B;
+		_screenA->setAnimation(txtA);
+		_screenB->setAnimation(txtB);
 	} else {
 		showScoreInScreens();
 

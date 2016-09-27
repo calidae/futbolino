@@ -33,6 +33,9 @@ enum Team
 
 const char TXT_END_A[] = "Final de partit. Verds guanyen!";
 const char TXT_END_B[] = "Final de partit. Blancs guanyen!";
+const char TXT_WIN_A[] = "Verds guanyen!";
+const char TXT_WIN_B[] = "Blancs guanyen!";
+const char TXT_LOOSE[] = "     A plorar";
 const char TXT_SERVE[] = "Saque";
 const char TXT_FIRSTBALL_A[] = "Verds saquen";
 const char TXT_FIRSTBALL_B[] = "Blancs saquen";
