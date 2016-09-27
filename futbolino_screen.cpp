@@ -35,7 +35,7 @@ void FutbolinoScreen::setAnimation(char* text){
 
 void FutbolinoScreen::setShortAnimation(char* text){
 	_animating = true;
-	_screen->displayZoneText(_zone, text, CENTER, 50, 150, MESH, FADE);
+	_screen->displayZoneText(_zone, text, CENTER, SHORT_ANIMATION_SPEED, SHORT_ANIMATION_PAUSE, MESH, FADE);
 }
 
 void FutbolinoScreen::setAnimation(char* text, void (*function)()){

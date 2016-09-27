@@ -12,6 +12,8 @@
 
 #define SCORE_BUF_SIZE 7
 #define ANIMATION_SPEED 30
+#define SHORT_ANIMATION_SPEED 50
+#define SHORT_ANIMATION_PAUSE 150
 
 class FutbolinoScreen {
 
