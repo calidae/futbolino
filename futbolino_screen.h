@@ -25,6 +25,7 @@ public:
 	void setStaticText(char* text);
 	void setAnimation(char* text);
 	void setShortAnimation(char* text);
+	void blinkAnimation(char* text);
 	void setAnimation(char* text, void (*)());
 	void showScore(int a, int b);
 

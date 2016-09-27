@@ -31,6 +31,7 @@ void Futbolino::loop() {
 		case SERVE:
 			chooseServerTeam(s, b);
 			break;
+		case PUTA:
 		case PLAY:
 			updateFrom(s);
 			updateFrom(b);
@@ -136,12 +137,14 @@ bool Futbolino::checkDebounce(bool &input, bool &debounce){
 }
 
 void Futbolino::addGoalA(){
+	DEBUG("team A scored");
 	changeScore(_golsA);
 	_lastScored = A;
 	manageScoreIncrement();
 }
 
 void Futbolino::addGoalB(){
+	DEBUG("team B scored");
 	changeScore(_golsB);
 	_lastScored = B;
 	manageScoreIncrement();
@@ -197,6 +200,10 @@ void Futbolino::manageScoreIncrement(){
 			}
 		}
 	}
+
+	if (_golsA == 5 && _golsB == 5) {
+		_currentState = PUTA;
+	}
 }
 
 void Futbolino::showScoreInScreens(){
@@ -205,13 +212,26 @@ void Futbolino::showScoreInScreens(){
 }
 
 void Futbolino::changeScore(int &team, int delta){
-	if (team + delta >= 0 && _currentState == PLAY) {
+	if (team + delta >= 0 &&
+		(_currentState == PLAY || _currentState == PUTA)
+	) {
 		team += delta;
 	}
 }
 
 void Futbolino::updateScreen(){
 	bool animationFinished = _screen->displayAnimate();
+	switch (_currentState){
+		case PUTA:
+			if (animationFinished) {
+				char* txt = (char*) TXT_PUTA;
+				_screenA->blinkAnimation(txt);
+				_screenB->blinkAnimation(txt);
+			}
+			break;
+		default:
+			break;
+	}
 	_screenA->update(animationFinished);
 	_screenB->update(animationFinished);
 }

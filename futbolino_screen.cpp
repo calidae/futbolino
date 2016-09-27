@@ -38,6 +38,11 @@ void FutbolinoScreen::setShortAnimation(char* text){
 	_screen->displayZoneText(_zone, text, CENTER, SHORT_ANIMATION_SPEED, SHORT_ANIMATION_PAUSE, MESH, FADE);
 }
 
+void FutbolinoScreen::blinkAnimation(char* text){
+	_animating = true;
+	_screen->displayZoneText(_zone, text, CENTER, SHORT_ANIMATION_SPEED, SHORT_ANIMATION_PAUSE, FADE, FADE);
+}
+
 void FutbolinoScreen::setAnimation(char* text, void (*function)()){
 	_next_callback = function;
 	setAnimation(text);

@@ -5,7 +5,7 @@
 #include <my_structs.h>
 #include <futbolino_screen.h>
 
-#define _FUTBOLINO_H_DEBUG
+#define _FUTBOLINO_H_DEBUG 1
 #ifdef _FUTBOLINO_H_DEBUG
 #define DEBUG(A) Serial.println(A)
 #else
@@ -21,7 +21,8 @@ enum GameState
 	SERVE,
 	PLAY,
 	WIN,
-	END
+	END,
+	PUTA
 };
 
 enum Team
@@ -39,6 +40,8 @@ const char TXT_LOOSE[] = "     A plorar";
 const char TXT_SERVE[] = "Saque";
 const char TXT_FIRSTBALL_A[] = "Verds saquen";
 const char TXT_FIRSTBALL_B[] = "Blancs saquen";
+const char TXT_PUTA[] = "5 - 5";
+
 
 void callbackRestart();
 
