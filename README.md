@@ -1,6 +1,7 @@
 # futbolino
 
 ## Dependences
+ - QueueArray: http://playground.arduino.cc/Code/QueueArray (download http://playground.arduino.cc/uploads/Code/QueueArray.zip)
  - PAROLA: https://parola.codeplex.com/
  - MD_MAX72xx: http://arduinocode.codeplex.com/ (download http://arduinocode.codeplex.com/downloads/get/1425138)
 
