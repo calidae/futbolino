@@ -2,6 +2,7 @@
 #define _FUTBOLINO_H
 
 #include <MD_Parola.h>
+#include "SimpleInputLayer.h"
 #include "my_structs.h"
 #include "futbolino_screen.h"
 
@@ -49,6 +50,7 @@ class Futbolino {
 
 public:
 	Futbolino(Inputs in, MD_Parola *screen);
+        ~Futbolino();
 
 	void begin();
 	void loop();
@@ -68,6 +70,7 @@ private:
 	
 	int _golsA = 0;
 	int _golsB = 0;
+        SIL* _buttons = NULL;
 	bool _debounceIrA = false;
 	bool _debounceIrB = false;
 	bool _debounceButtonPlusA = false;

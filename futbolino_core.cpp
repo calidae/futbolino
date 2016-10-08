@@ -3,11 +3,19 @@
 char* goal_texts[] = {"Gas", "Bo", "100", "Dins", "Inside", "Mel", "Nyam", "Oju!"};
 
 Futbolino::Futbolino(Inputs in, MD_Parola *screen) {
+        int buttonPins[4] = {
+          in.PIN_TEAM_A_PLUS, in.PIN_TEAM_A_MINUS, in.PIN_TEAM_B_PLUS, in.PIN_TEAM_B_MINUS
+        };
+        _buttons = new SIL(4, buttonPins);
 	_in = in;
 	_screen = screen;
 
 	_screenA = new FutbolinoScreen(_screen, 0);
 	_screenB = new FutbolinoScreen(_screen, 1);
+}
+
+Futbolino::~Futbolino() {
+        delete _buttons;
 }
 
 void Futbolino::begin() {
