@@ -25,13 +25,27 @@ const int DATA_PIN = 11;
 const int CS_PIN = 10;
 
 // Screen declaration
-MD_Parola SCREEN = MD_Parola(DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
+MD_Parola *SCREEN = NULL;
 
 // Apps declaration
-Futbolino futbolino = Futbolino(in, &SCREEN);
+
+
+Futbolino* futbolino = NULL;
 
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(1000);
+    digitalWrite(LED_BUILTIN, LOW);
+    Serial.println("go!");
+Serial.println(A0);
+Serial.println(A1);
+Serial.println(A2);
+Serial.println(A3);
+  SCREEN = new MD_Parola(DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
+  futbolino = new Futbolino(in, SCREEN);
+
   // Serial debug
   Serial.begin(9600);
 
@@ -46,15 +60,15 @@ void setup() {
   // pinMode(in.PIN_IR_B,         INPUT);
 
   // Screen setup
-  SCREEN.begin(TOTAL_SCREENS);
-  SCREEN.setInvert(false);
-  SCREEN.setZone(0, FIRST_SCREEN_START, FIRST_SCREEN_END);
-  SCREEN.setZone(1, SECOND_SCREEN_START, SECOND_SCREEN_END);
+  SCREEN->begin(TOTAL_SCREENS);
+  SCREEN->setInvert(false);
+  SCREEN->setZone(0, FIRST_SCREEN_START, FIRST_SCREEN_END);
+  SCREEN->setZone(1, SECOND_SCREEN_START, SECOND_SCREEN_END);
 
   // Apps setup
-  futbolino.begin();
+  futbolino->begin();
 }
 
 void loop() {
-  futbolino.loop();
+  futbolino->loop();
 }

@@ -19,6 +19,7 @@ Futbolino::~Futbolino() {
 }
 
 void Futbolino::begin() {
+        DEBUG("begin");
 	resetScore();
 	_currentState = SERVE;
 	_lastScored = UNDEFINED;
@@ -31,9 +32,29 @@ void Futbolino::begin() {
 }
 
 void Futbolino::loop() {
-
+  DEBUG("futbolino-loop");
 	Sensors s = readIRSensors();
 	Buttons b = readButtons();
+        _buttons->update();
+        
+        SIL_Event* event = NULL;
+        while (_buttons->pollEvent(event)) {
+          DEBUG("esdeveniment");
+          DEBUG(event->pin);
+          DEBUG(event->index);
+          if (event->type == KEY_UP) {
+            if(_currentState == PLAY) {
+              	if (event->pin == _in.PIN_TEAM_A_PLUS)
+			addGoalA();
+		} else if (event->pin == _in.PIN_TEAM_A_MINUS){
+			subGoalA();
+		} else if (event->pin == _in.PIN_TEAM_B_PLUS){
+			addGoalB();
+		} else if (event->pin == _in.PIN_TEAM_B_MINUS){
+			subGoalB();
+		}
+            }
+        }
 
 	switch (_currentState){
 		case SERVE:
@@ -58,14 +79,14 @@ void Futbolino::loop() {
 void Futbolino::chooseServerTeam(Sensors s, Buttons b){
 	if (checkDebounce(s.irA, _debounceIrA) ||
 			checkDebounce(b.plusA, _debounceButtonPlusA)) {
-		DEBUG("team A scored");
+		DEBUG("team A saca");
 		_lastScored = A;
 		_screenA->setAnimation((char*)TXT_FIRSTBALL_A);
 		_screenB->showScore(0, 0);
 		_currentState = PLAY;
 	} else if (checkDebounce(s.irB, _debounceIrB) ||
 			checkDebounce(b.plusB, _debounceButtonPlusB)) {
-		DEBUG("team B scored");
+		DEBUG("team B saca");
 		_lastScored = B;
 		_screenB->setAnimation((char*)TXT_FIRSTBALL_B);
 		_screenA->showScore(0, 0);
@@ -107,19 +128,6 @@ void Futbolino::updateFrom(Sensors s){
 void Futbolino::updateFrom(Buttons b){
 	if (areAllButtonsPressed(b)){
 		begin();
-	} else {
-		if (checkDebounce(b.plusA, _debounceButtonPlusA)){
-			addGoalA();
-		}
-		if (checkDebounce(b.minusA, _debounceButtonMinusA)){
-			subGoalA();
-		}
-		if (checkDebounce(b.plusB, _debounceButtonPlusB)){
-			addGoalB();
-		}
-		if (checkDebounce(b.minusB, _debounceButtonMinusB)){
-			subGoalB();
-		}
 	}
 }
 
@@ -215,6 +223,7 @@ void Futbolino::manageScoreIncrement(){
 }
 
 void Futbolino::showScoreInScreens(){
+        DEBUG(_golsA);
 	_screenA->showScore(_golsA, _golsB);
 	_screenB->showScore(_golsB, _golsA);
 }
