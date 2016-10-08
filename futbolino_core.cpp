@@ -1,4 +1,4 @@
-#include "futbolino.h"
+#include "futbolino_core.h"
 
 char* goal_texts[] = {"Gas", "Bo", "100", "Dins", "Inside", "Mel", "Nyam", "Oju!"};
 

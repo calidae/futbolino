@@ -4,8 +4,8 @@
 #include <SPI.h>
 
 #include <stdio.h>
-#include <my_structs.h>
-#include <futbolino.h>
+#include "my_structs.h"
+#include "futbolino_core.h"
 
 #define TOTAL_SCREENS 2
 #define FIRST_SCREEN_START 0

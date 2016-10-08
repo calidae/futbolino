@@ -2,8 +2,8 @@
 #define _FUTBOLINO_H
 
 #include <MD_Parola.h>
-#include <my_structs.h>
-#include <futbolino_screen.h>
+#include "my_structs.h"
+#include "futbolino_screen.h"
 
 #define _FUTBOLINO_H_DEBUG 1
 #ifdef _FUTBOLINO_H_DEBUG
