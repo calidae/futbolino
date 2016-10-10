@@ -85,8 +85,14 @@ public:
       uint8_t z, char *pText, textPosition_t align, uint16_t speed, uint16_t pause,
       textEffect_t effectIn, textEffect_t effectOut = NO_EFFECT
     ) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    lcd->setCursor(0, z);
+    lcd->print("                ");
     lcd->setCursor(0, z);
     lcd->print(pText);
+    delay(speed*100);
+    delay(pause*100);
+    digitalWrite(LED_BUILTIN, LOW);
     return;
   };
 
