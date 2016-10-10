@@ -1,6 +1,6 @@
 #include "futbolino_screen.h"
 
-FutbolinoScreen::FutbolinoScreen(MD_Parola *screen, int zone) {
+FutbolinoScreen::FutbolinoScreen(ScreenWrapper *screen, int zone) {
 	_screen = screen;
 	_zone = zone;
 	begin();
@@ -19,7 +19,7 @@ void FutbolinoScreen::update(bool animationFinished){
 			_next_callback = 0;
 		} else {
 			_showScore();
-		}	
+		}
 	}
 }
 

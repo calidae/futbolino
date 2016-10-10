@@ -2,7 +2,7 @@
 
 char* goal_texts[] = {"Gas", "Bo", "100", "Dins", "Inside", "Mel", "Nyam", "Oju!"};
 
-Futbolino::Futbolino(Inputs in, MD_Parola *screen) {
+Futbolino::Futbolino(Inputs in, ScreenWrapper *screen) {
   int buttonPins[4] = {
     in.PIN_TEAM_A_PLUS, in.PIN_TEAM_A_MINUS, in.PIN_TEAM_B_PLUS, in.PIN_TEAM_B_MINUS
   };

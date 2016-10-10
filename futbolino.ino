@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "my_structs.h"
 #include "futbolino_core.h"
+#include "screen_wrapper.h"
 
 #define TOTAL_SCREENS 2
 #define FIRST_SCREEN_START 0
@@ -25,7 +26,8 @@ const int DATA_PIN = 11;
 const int CS_PIN = 10;
 
 // Screen declaration
-MD_Parola *SCREEN = NULL;
+MD_Parola *screen = NULL;
+ScreenWrapper* screenWrapper = NULL;
 
 // Apps declaration
 
@@ -43,8 +45,9 @@ Serial.println(A0);
 Serial.println(A1);
 Serial.println(A2);
 Serial.println(A3);
-  SCREEN = new MD_Parola(DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
-  futbolino = new Futbolino(in, SCREEN);
+  screen = new MD_Parola(DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
+  screenWrapper = new LedMatrixWrapper(screen);
+  futbolino = new Futbolino(in, screenWrapper);
 
   // Serial debug
   Serial.begin(9600);
@@ -60,10 +63,10 @@ Serial.println(A3);
   // pinMode(in.PIN_IR_B,         INPUT);
 
   // Screen setup
-  SCREEN->begin(TOTAL_SCREENS);
-  SCREEN->setInvert(false);
-  SCREEN->setZone(0, FIRST_SCREEN_START, FIRST_SCREEN_END);
-  SCREEN->setZone(1, SECOND_SCREEN_START, SECOND_SCREEN_END);
+  screen->begin(TOTAL_SCREENS);
+  screen->setInvert(false);
+  screen->setZone(0, FIRST_SCREEN_START, FIRST_SCREEN_END);
+  screen->setZone(1, SECOND_SCREEN_START, SECOND_SCREEN_END);
 
   // Apps setup
   futbolino->begin();

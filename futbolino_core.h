@@ -4,6 +4,7 @@
 #include <MD_Parola.h>
 #include "SimpleInputLayer.h"
 #include "my_structs.h"
+#include "screen_wrapper.h"
 #include "futbolino_screen.h"
 
 #define _FUTBOLINO_H_DEBUG 1
@@ -49,7 +50,7 @@ void callbackRestart();
 class Futbolino {
 
 public:
-	Futbolino(Inputs in, MD_Parola *screen);
+	Futbolino(Inputs in, ScreenWrapper *screen);
         ~Futbolino();
 
 	void begin();
@@ -58,7 +59,7 @@ public:
 private:
 
 	Inputs _in;
-	MD_Parola* _screen;
+	ScreenWrapper* _screen;
 	char _screenBufferA[SCREEN_BUF_SIZE];
 	char _screenBufferB[SCREEN_BUF_SIZE];
 
@@ -67,7 +68,7 @@ private:
 
 	GameState _currentState;
 	Team _lastScored;
-	
+
 	int _golsA = 0;
 	int _golsB = 0;
         SIL* _buttons = NULL;

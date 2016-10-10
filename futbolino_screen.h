@@ -2,6 +2,7 @@
 #define _FUTBOLINO_SCREEN_H
 
 #include <MD_Parola.h>
+#include "screen_wrapper.h"
 
 #define _FUTBOLINO_SCREEN_H_DEBUG
 #ifdef _FUTBOLINO_SCREEN_H_DEBUG
@@ -18,7 +19,7 @@
 class FutbolinoScreen {
 
 public:
-	FutbolinoScreen(MD_Parola *screen, int zone);
+	FutbolinoScreen(ScreenWrapper *screen, int zone);
 
 	void begin();
 	void update(bool animationFinished);
@@ -30,7 +31,7 @@ public:
 	void showScore(int a, int b);
 
 private:
-	MD_Parola* _screen;
+	ScreenWrapper* _screen;
 	char _score_buffer[SCORE_BUF_SIZE];
 	int _zone;
 	bool _animating;
