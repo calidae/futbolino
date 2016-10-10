@@ -1,6 +1,8 @@
 #ifndef _SCREEN_WRAPPER_H
 #define _SCREEN_WRAPPER_H
 
+#include <LiquidCrystal.h>
+
 class ScreenWrapper {
 public:
   virtual bool getZoneStatus(int zone) = 0;
@@ -62,6 +64,34 @@ public:
 
 private:
   HardwareSerial* pSerial;
+};
+
+class LCDWrapper : public ScreenWrapper {
+public:
+
+  LCDWrapper(LiquidCrystal* lcd) {
+    this->lcd = lcd;
+  }
+
+  virtual bool getZoneStatus(int zone) {
+      return true;
+  };
+
+  virtual bool displayAnimate() {
+      return true;
+  };
+
+  virtual void displayZoneText(
+      uint8_t z, char *pText, textPosition_t align, uint16_t speed, uint16_t pause,
+      textEffect_t effectIn, textEffect_t effectOut = NO_EFFECT
+    ) {
+    lcd->setCursor(0, z);
+    lcd->print(pText);
+    return;
+  };
+
+private:
+  LiquidCrystal* lcd;
 };
 
 #endif
