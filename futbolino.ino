@@ -46,7 +46,8 @@ Serial.println(A1);
 Serial.println(A2);
 Serial.println(A3);
   screen = new MD_Parola(DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
-  screenWrapper = new LedMatrixWrapper(screen);
+  screenWrapper = new SerialPrintlnWrapper(&Serial);
+
   futbolino = new Futbolino(in, screenWrapper);
 
   // Serial debug

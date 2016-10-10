@@ -37,4 +37,31 @@ private:
   MD_Parola* _screen;
 };
 
+class SerialPrintlnWrapper : public ScreenWrapper {
+public:
+
+  SerialPrintlnWrapper(HardwareSerial* pSerial) {
+    this->pSerial = pSerial;
+  }
+
+  virtual bool getZoneStatus(int zone) {
+      return true;
+  };
+
+  virtual bool displayAnimate() {
+      return true;
+  };
+
+  virtual void displayZoneText(
+      uint8_t z, char *pText, textPosition_t align, uint16_t speed, uint16_t pause,
+      textEffect_t effectIn, textEffect_t effectOut = NO_EFFECT
+    ) {
+    pSerial->println(pText);
+    return;
+  };
+
+private:
+  HardwareSerial* pSerial;
+};
+
 #endif
