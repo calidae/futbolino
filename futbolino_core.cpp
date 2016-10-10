@@ -3,10 +3,10 @@
 char* goal_texts[] = {"Gas", "Bo", "100", "Dins", "Inside", "Mel", "Nyam", "Oju!"};
 
 Futbolino::Futbolino(Inputs in, MD_Parola *screen) {
-        int buttonPins[4] = {
-          in.PIN_TEAM_A_PLUS, in.PIN_TEAM_A_MINUS, in.PIN_TEAM_B_PLUS, in.PIN_TEAM_B_MINUS
-        };
-        _buttons = new SIL(4, buttonPins);
+  int buttonPins[4] = {
+    in.PIN_TEAM_A_PLUS, in.PIN_TEAM_A_MINUS, in.PIN_TEAM_B_PLUS, in.PIN_TEAM_B_MINUS
+  };
+  _buttons = new SIL(4, buttonPins);
 	_in = in;
 	_screen = screen;
 
@@ -15,11 +15,10 @@ Futbolino::Futbolino(Inputs in, MD_Parola *screen) {
 }
 
 Futbolino::~Futbolino() {
-        delete _buttons;
+  delete _buttons;
 }
 
 void Futbolino::begin() {
-        DEBUG("begin");
 	resetScore();
 	_currentState = SERVE;
 	_lastScored = UNDEFINED;
@@ -32,29 +31,29 @@ void Futbolino::begin() {
 }
 
 void Futbolino::loop() {
-  DEBUG("futbolino-loop");
 	Sensors s = readIRSensors();
 	Buttons b = readButtons();
-        _buttons->update();
-        
-        SIL_Event* event = NULL;
-        while (_buttons->pollEvent(event)) {
-          DEBUG("esdeveniment");
-          DEBUG(event->pin);
-          DEBUG(event->index);
-          if (event->type == KEY_UP) {
-            if(_currentState == PLAY) {
-              	if (event->pin == _in.PIN_TEAM_A_PLUS)
-			addGoalA();
-		} else if (event->pin == _in.PIN_TEAM_A_MINUS){
-			subGoalA();
-		} else if (event->pin == _in.PIN_TEAM_B_PLUS){
-			addGoalB();
-		} else if (event->pin == _in.PIN_TEAM_B_MINUS){
-			subGoalB();
-		}
-            }
-        }
+  _buttons->update();
+
+  SIL_Event event;
+  while (_buttons->pollEvent(&event)) {
+    DEBUG("esdeveniment");
+    DEBUG(event.type);
+    DEBUG(event.pin);
+    DEBUG(event.index);
+    if (event.type == KEY_UP) {
+      if(_currentState == PLAY) {
+      	if (event.pin == _in.PIN_TEAM_A_PLUS)
+  		    addGoalA();
+  		} else if (event.pin == _in.PIN_TEAM_A_MINUS){
+  			subGoalA();
+  		} else if (event.pin == _in.PIN_TEAM_B_PLUS){
+  			addGoalB();
+  		} else if (event.pin == _in.PIN_TEAM_B_MINUS){
+  			subGoalB();
+  		}
+    }
+  }
 
 	switch (_currentState){
 		case SERVE:
