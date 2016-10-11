@@ -28,7 +28,31 @@ class SIL_Event {
   int pin;
 };
 
-class SIL {
+class SIL_EventQueue {
+
+  public:
+  virtual void update() = 0;
+
+  boolean pollEvent(SIL_Event* pEvent) {
+    if (_evenQueue.isEmpty()) {
+      return false;
+    } else {
+      *pEvent = _evenQueue.pop();
+      return true;
+    }
+  };
+
+  protected:
+
+  QueueArray<SIL_Event> _evenQueue;
+
+  void enqueue(SIL_Event event) {
+    _evenQueue.push(event);
+  };
+
+};
+
+class SIL : public SIL_EventQueue {
 
   public:
 
@@ -65,25 +89,50 @@ class SIL {
     }
   }
 
-  boolean pollEvent(SIL_Event* pEvent) {
-    if (_evenQueue.isEmpty()) {
-      return false;
-    } else {
-      *pEvent = _evenQueue.pop();
-      return true;
-    }
-  }
-
   private:
 
   int _pinArraySize;
   int* _pinArray;
   boolean* _pinsState;
   boolean* _debounces;
-  QueueArray<SIL_Event> _evenQueue;
 
-  void enqueue(SIL_Event event) {
-    _evenQueue.push(event);
+};
+
+class SIL_Sensor : public SIL_EventQueue {
+
+  public:
+
+  SIL_Sensor(int pin, int threshold) {
+    this->pin = pin;
+    this->threshold = threshold;
+    debounce = analogRead(pin) < threshold;
   }
+
+  void update() {
+    reading = analogRead(pin);
+
+    if (!debounce) {
+      if (reading > threshold) {
+        debounce = true;
+        enqueue(SIL_Event(KEY_UP, 0, pin));
+      }
+    } else {
+      if(reading < threshold) {
+        debounce = false;
+        enqueue(SIL_Event(KEY_DOWN, 0, pin));
+      }
+    }
+  }
+
+  int* getReading() {
+    return &reading;
+  }
+
+  private:
+
+  int pin;
+  int threshold;
+  int reading;
+  boolean debounce;
 
 };
