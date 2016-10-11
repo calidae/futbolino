@@ -15,14 +15,14 @@ struct Sensors {
 	bool irB;
 };
 
-typedef struct Inputs Inputs;
-struct Inputs {
-	int PIN_TEAM_A_PLUS;
-	int PIN_TEAM_A_MINUS;
-	int PIN_TEAM_B_PLUS;
-	int PIN_TEAM_B_MINUS;
-	int PIN_IR_A;
-	int PIN_IR_B;
+typedef struct InputPins InputPins;
+struct InputPins {
+	int a_plus;
+	int a_minus;
+	int b_plus;
+	int b_minus;
+	int a_ir;
+	int b_ir;
 };
 
 

@@ -2,14 +2,12 @@
 
 char* goal_texts[] = {"Gas", "Bo", "100", "Dins", "Inside", "Mel", "Nyam", "Oju!"};
 
-Futbolino::Futbolino(Inputs in, ScreenWrapper *screen) {
-  int buttonPins[4] = {
-    in.PIN_TEAM_A_PLUS, in.PIN_TEAM_A_MINUS, in.PIN_TEAM_B_PLUS, in.PIN_TEAM_B_MINUS
-  };
+Futbolino::Futbolino(InputPins in, ScreenWrapper *screen) {
+  int buttonPins[4] = {in.a_plus, in.a_minus, in.b_plus, in.b_minus};
   _buttons = new SIL(4, buttonPins);
-  _irA = new SIL_Sensor(in.PIN_IR_A, IR_THRESHOLD);
-  _irB = new SIL_Sensor(in.PIN_IR_B, IR_THRESHOLD);
-  _in = in;
+  _irA = new SIL_Sensor(in.a_ir, IR_THRESHOLD);
+  _irB = new SIL_Sensor(in.b_ir, IR_THRESHOLD);
+  _inputPins = in;
   _screen = screen;
 
   _screenA = new FutbolinoScreen(_screen, 0);
@@ -60,12 +58,12 @@ void Futbolino::loop() {
 }
 
 void Futbolino::chooseServerTeam(SIL_Event event){
-  if(event.pin != _in.PIN_TEAM_A_MINUS && event.pin != _in.PIN_TEAM_B_MINUS) {
-    if (event.pin == _in.PIN_TEAM_A_PLUS || event.pin == _in.PIN_IR_A) {
+  if(event.pin != _inputPins.a_minus && event.pin != _inputPins.b_minus) {
+    if (event.pin == _inputPins.a_plus || event.pin == _inputPins.a_ir) {
       _lastScored = A;
       _screenA->setAnimation((char*)TXT_FIRSTBALL_A);
       _screenB->showScore(0, 0);
-    } else if (event.pin == _in.PIN_TEAM_B_PLUS || event.pin == _in.PIN_IR_B) {
+    } else if (event.pin == _inputPins.b_plus || event.pin == _inputPins.b_ir) {
       _lastScored = B;
       _screenB->setAnimation((char*)TXT_FIRSTBALL_B);
       _screenA->showScore(0, 0);
@@ -75,13 +73,13 @@ void Futbolino::chooseServerTeam(SIL_Event event){
 }
 
 void Futbolino::update(SIL_Event event){
-  if (event.pin == _in.PIN_TEAM_A_PLUS || event.pin == _in.PIN_IR_A) {
+  if (event.pin == _inputPins.a_plus || event.pin == _inputPins.a_ir) {
     addGoalA();
-  } else if (event.pin == _in.PIN_TEAM_A_MINUS) {
+  } else if (event.pin == _inputPins.a_minus) {
     subGoalA();
-  } else if (event.pin == _in.PIN_TEAM_B_PLUS || event.pin == _in.PIN_IR_B) {
+  } else if (event.pin == _inputPins.b_plus || event.pin == _inputPins.b_ir) {
     addGoalB();
-  } else if (event.pin == _in.PIN_TEAM_B_MINUS) {
+  } else if (event.pin == _inputPins.b_minus) {
     subGoalB();
   }
 }

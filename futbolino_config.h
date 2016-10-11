@@ -4,7 +4,7 @@
 ScreenWrapper* setupScreen(void);
 
 // Input Pins
-const Inputs in = {A0, A1, A2, A3, A4, A5};
+const InputPins INPUT_PINS = {A0, A1, A2, A3, A4, A5};
 
 //#define FUTBOLINO_SCREEN_MATRIX
 #define FUTBOLINO_SCREEN_LCD

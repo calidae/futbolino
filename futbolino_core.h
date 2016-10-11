@@ -50,7 +50,7 @@ void callbackRestart();
 class Futbolino {
 
 public:
-  Futbolino(Inputs in, ScreenWrapper *screen);
+  Futbolino(InputPins in, ScreenWrapper *screen);
         ~Futbolino();
 
   void begin();
@@ -58,7 +58,7 @@ public:
 
 private:
 
-  Inputs _in;
+  InputPins _inputPins;
   ScreenWrapper* _screen;
   char _screenBufferA[SCREEN_BUF_SIZE];
   char _screenBufferB[SCREEN_BUF_SIZE];

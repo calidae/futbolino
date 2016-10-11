@@ -21,15 +21,15 @@ void setup() {
   Serial.begin(9600);
 
   // Input setup
-  pinMode(in.PIN_TEAM_A_PLUS,  INPUT);
-  pinMode(in.PIN_TEAM_A_MINUS, INPUT);
-  pinMode(in.PIN_TEAM_B_PLUS,  INPUT);
-  pinMode(in.PIN_TEAM_B_MINUS, INPUT);
-  pinMode(in.PIN_IR_A,         INPUT);
-  pinMode(in.PIN_IR_B,         INPUT);
+  pinMode(INPUT_PINS.a_plus,  INPUT);
+  pinMode(INPUT_PINS.a_minus, INPUT);
+  pinMode(INPUT_PINS.b_plus,  INPUT);
+  pinMode(INPUT_PINS.b_minus, INPUT);
+  pinMode(INPUT_PINS.a_ir,    INPUT);
+  pinMode(INPUT_PINS.b_ir,    INPUT);
 
   screenWrapper = setupScreen();
-  futbolino = new Futbolino(in, screenWrapper);
+  futbolino = new Futbolino(INPUT_PINS, screenWrapper);
   futbolino->begin();
 }
 
