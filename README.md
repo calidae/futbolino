@@ -13,3 +13,10 @@ Move the source outside the src folder to the root of each library
 #define	USE_PAROLA_HW 0
 #define	USE_FC16_HW 1
 ```
+
+## Setup
+```
+cp futbolino_config.h.example futbolino_config.h
+```
+And edit pins and stuff as necessary.
+
