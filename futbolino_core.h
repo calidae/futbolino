@@ -83,9 +83,8 @@ private:
   void showScoreInScreens();
   void changeScore(int &team, int delta = 1);
   void readButton(int &ir, bool &debounce);
-  void chooseServerTeam(Sensors s, Buttons b);
-  void updateFrom(Buttons b);
-  void updateFrom(Sensors s);
+  void chooseServerTeam(SIL_Event event);
+  void update(SIL_Event event);
   bool areAllButtonsPressed(Buttons b);
   void resetScore();
 
