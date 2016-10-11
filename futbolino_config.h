@@ -1,6 +1,8 @@
 #ifndef _FUTBOLINO_CONFIG_H
 #define _FUTBOLINO_CONFIG_H
 
+ScreenWrapper* setupScreen(void);
+
 // Input Pins
 const Inputs in = {A0, A1, A2, A3, A4, A5};
 
@@ -21,11 +23,36 @@ const int CLK_PIN = 12;
 const int DATA_PIN = 11;
 const int CS_PIN = 10;
 
+ScreenWrapper* setupScreen() {
+  MD_Parola ledMatrix = new MD_Parola(DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
+  ledMatrix.begin(TOTAL_SCREENS);
+  ledMatrix.setInvert(false);
+  ledMatrix.setZone(0, FIRST_SCREEN_START, FIRST_SCREEN_END);
+  ledMatrix.setZone(1, SECOND_SCREEN_START, SECOND_SCREEN_END);
+  ScreenWrapper* screenWrapper = new LedMatrixWrapper(&ledMatrix);
+  return screenWrapper;
+}
+
 #else
 #ifdef FUTBOLINO_SCREEN_LCD
+
+ScreenWrapper* setupScreen() {
+  LiquidCrystal* lcd = new LiquidCrystal(12, 11, 5, 4, 3, 2);
+  lcd->begin(16, 2);
+  ScreenWrapper* screenWrapper = new LCDWrapper(lcd);
+  return screenWrapper;
+}
+
 #else
 #ifdef FUTBOLINO_SCREEN_SERIAL
+
+ScreenWrapper* setupScreen() {
+  ScreenWrapper* screenWrapper = new SerialPrintlnWrapper(&Serial);
+  return screenWrapper;
+}
+
 #else
+// Compiler will complain Will complain about setupScreen()
 #endif
 #endif
 #endif
