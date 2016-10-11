@@ -74,12 +74,6 @@ private:
   SIL* _buttons = NULL;
   SIL_Sensor* _irA = NULL;
   SIL_Sensor* _irB = NULL;
-  bool _debounceIrA = false;
-  bool _debounceIrB = false;
-  bool _debounceButtonPlusA = false;
-  bool _debounceButtonMinusA = false;
-  bool _debounceButtonPlusB = false;
-  bool _debounceButtonMinusB = false;
 
   void addGoalA();
   void addGoalB();
@@ -89,12 +83,9 @@ private:
   void showScoreInScreens();
   void changeScore(int &team, int delta = 1);
   void readButton(int &ir, bool &debounce);
-  struct Buttons readButtons();
   void chooseServerTeam(Sensors s, Buttons b);
   void updateFrom(Buttons b);
-  struct Sensors readIRSensors();
   void updateFrom(Sensors s);
-  bool checkDebounce(bool &input, bool &debounce);
   bool areAllButtonsPressed(Buttons b);
   void resetScore();
 

@@ -33,93 +33,79 @@ void Futbolino::begin() {
 }
 
 void Futbolino::loop() {
-  Sensors s = readIRSensors();
-  Buttons b = readButtons();
   _buttons->update();
+  _irA->update();
+  _irB->update();
 
-  for (SIL_Event event; _buttons->pollEvent(&event); ) {
+  for (SIL_Event event;
+      _buttons->pollEvent(&event)
+      || _irA->pollEvent(&event)
+      || _irB->pollEvent(&event);
+  ) {
+    Serial.print("[event]");
+    Serial.print(event.pin);
+    Serial.print(":");
+    Serial.print(event.type);
+    Serial.println("");
     if (event.type == KEY_UP) {
-      if(_currentState == PLAY) {
-        if (event.pin == _in.PIN_TEAM_A_PLUS) {
+      if(_currentState == PLAY || _currentState == PUTA) {
+        if (event.pin == _in.PIN_TEAM_A_PLUS || event.pin == _in.PIN_IR_A) {
           addGoalA();
         } else if (event.pin == _in.PIN_TEAM_A_MINUS) {
           subGoalA();
-        } else if (event.pin == _in.PIN_TEAM_B_PLUS) {
+        } else if (event.pin == _in.PIN_TEAM_B_PLUS || event.pin == _in.PIN_IR_B) {
           addGoalB();
         } else if (event.pin == _in.PIN_TEAM_B_MINUS) {
           subGoalB();
         }
+      } else if(_currentState == SERVE
+          && event.type == KEY_UP
+          && event.pin != _in.PIN_TEAM_A_MINUS
+          && event.pin != _in.PIN_TEAM_B_MINUS
+      ) {
+        if (event.pin == _in.PIN_TEAM_A_PLUS || event.pin == _in.PIN_IR_A) {
+          _lastScored = A;
+          _screenA->setAnimation((char*)TXT_FIRSTBALL_A);
+          _screenB->showScore(0, 0);
+        } else if (event.pin == _in.PIN_TEAM_B_PLUS || event.pin == _in.PIN_IR_B) {
+          _lastScored = B;
+          _screenB->setAnimation((char*)TXT_FIRSTBALL_B);
+          _screenA->showScore(0, 0);
+        }
+        _currentState = PLAY;
       }
     }
-  }
-
-  switch (_currentState){
-    case SERVE:
-      chooseServerTeam(s, b);
-      break;
-    case PUTA:
-    case PLAY:
-      updateFrom(s);
-      updateFrom(b);
-      break;
-    case WIN:
-      break;
-    case END:
-      break;
-    default:
-      ;
   }
 
   updateScreen();
 }
 
 void Futbolino::chooseServerTeam(Sensors s, Buttons b){
-  if (checkDebounce(s.irA, _debounceIrA) ||
-      checkDebounce(b.plusA, _debounceButtonPlusA)) {
-    DEBUG("team A saca");
-    _lastScored = A;
-    _screenA->setAnimation((char*)TXT_FIRSTBALL_A);
-    _screenB->showScore(0, 0);
-    _currentState = PLAY;
-  } else if (checkDebounce(s.irB, _debounceIrB) ||
-      checkDebounce(b.plusB, _debounceButtonPlusB)) {
-    DEBUG("team B saca");
-    _lastScored = B;
-    _screenB->setAnimation((char*)TXT_FIRSTBALL_B);
-    _screenA->showScore(0, 0);
-    _currentState = PLAY;
-  }
-}
-
-struct Sensors Futbolino::readIRSensors() {
-  // IR SENSORS ARE TEMPORALLY DISABLED, AND ARE ALWAYS OFF
-  // bool irA = analogRead(_in.PIN_IR_A) > IR_THRESHOLD;
-  // bool irB = analogRead(_in.PIN_IR_B) > IR_THRESHOLD;
-  bool irA = false;
-  bool irB = false;
-
-  Sensors s = {irA, irB};
-  return s;
-}
-
-struct Buttons Futbolino::readButtons() {
-  bool plusA  = digitalRead(_in.PIN_TEAM_A_PLUS);
-  bool minusA = digitalRead(_in.PIN_TEAM_A_MINUS);
-  bool plusB  = digitalRead(_in.PIN_TEAM_B_PLUS);
-  bool minusB = digitalRead(_in.PIN_TEAM_B_MINUS);
-
-  Buttons b = {plusA, minusA, plusB, minusB};
-  return b;
+  // if (checkDebounce(s.irA, _debounceIrA) ||
+  //     checkDebounce(b.plusA, _debounceButtonPlusA)) {
+  //   DEBUG("team A saca");
+  //   _lastScored = A;
+  //   _screenA->setAnimation((char*)TXT_FIRSTBALL_A);
+  //   _screenB->showScore(0, 0);
+  //   _currentState = PLAY;
+  // } else if (checkDebounce(s.irB, _debounceIrB) ||
+  //     checkDebounce(b.plusB, _debounceButtonPlusB)) {
+  //   DEBUG("team B saca");
+  //   _lastScored = B;
+  //   _screenB->setAnimation((char*)TXT_FIRSTBALL_B);
+  //   _screenA->showScore(0, 0);
+  //   _currentState = PLAY;
+  // }
 }
 
 void Futbolino::updateFrom(Sensors s){
   // TODO: Change irA and irB pins and simplify the problem?
-  if (checkDebounce(s.irA, _debounceIrA)){
-    addGoalB();
-  }
-  if (checkDebounce(s.irB, _debounceIrB)){
-    addGoalA();
-  }
+  // if (checkDebounce(s.irA, _debounceIrA)){
+  //   addGoalB();
+  // }
+  // if (checkDebounce(s.irB, _debounceIrB)){
+  //   addGoalA();
+  // }
 }
 
 void Futbolino::updateFrom(Buttons b){
@@ -135,18 +121,6 @@ bool Futbolino::areAllButtonsPressed(Buttons b){
 void Futbolino::resetScore(){
   _golsA = 0;
   _golsB = 0;
-}
-
-bool Futbolino::checkDebounce(bool &input, bool &debounce){
-  if (!debounce) {
-    if (input) {
-      debounce = true;
-      return true;
-    }
-  } else if (!input) {
-    debounce = false;
-  }
-  return false;
 }
 
 void Futbolino::addGoalA(){
@@ -220,7 +194,6 @@ void Futbolino::manageScoreIncrement(){
 }
 
 void Futbolino::showScoreInScreens(){
-        DEBUG(_golsA);
   _screenA->showScore(_golsA, _golsB);
   _screenB->showScore(_golsB, _golsA);
 }
