@@ -35,23 +35,19 @@ void Futbolino::loop() {
 	Buttons b = readButtons();
   _buttons->update();
 
-  SIL_Event event;
-  while (_buttons->pollEvent(&event)) {
-    DEBUG("esdeveniment");
-    DEBUG(event.type);
-    DEBUG(event.pin);
-    DEBUG(event.index);
+  for (SIL_Event event; _buttons->pollEvent(&event); ) {
     if (event.type == KEY_UP) {
       if(_currentState == PLAY) {
-      	if (event.pin == _in.PIN_TEAM_A_PLUS)
+      	if (event.pin == _in.PIN_TEAM_A_PLUS) {
   		    addGoalA();
-  		} else if (event.pin == _in.PIN_TEAM_A_MINUS){
-  			subGoalA();
-  		} else if (event.pin == _in.PIN_TEAM_B_PLUS){
-  			addGoalB();
-  		} else if (event.pin == _in.PIN_TEAM_B_MINUS){
-  			subGoalB();
-  		}
+        } else if (event.pin == _in.PIN_TEAM_A_MINUS) {
+    			subGoalA();
+    		} else if (event.pin == _in.PIN_TEAM_B_PLUS) {
+    			addGoalB();
+    		} else if (event.pin == _in.PIN_TEAM_B_MINUS) {
+    			subGoalB();
+    		}
+      }
     }
   }
 

@@ -36,9 +36,6 @@ Futbolino* futbolino = NULL;
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_BUILTIN, LOW);
 
   // screen = new MD_Parola(DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
   lcd = new LiquidCrystal(12, 11, 5, 4, 3, 2);

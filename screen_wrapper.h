@@ -90,8 +90,7 @@ public:
     lcd->print("                ");
     lcd->setCursor(0, z);
     lcd->print(pText);
-    delay(speed*100);
-    delay(pause*100);
+    delay(min(500, 10*(speed+pause)));
     digitalWrite(LED_BUILTIN, LOW);
     return;
   };

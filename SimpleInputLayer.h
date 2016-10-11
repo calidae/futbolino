@@ -34,9 +34,12 @@ class SIL {
 
   SIL(int pinArraySize, int* pinArray) {
     _pinArraySize = pinArraySize;
-    _pinArray = pinArray;
     _pinsState = new boolean[_pinArraySize];
     _debounces = new boolean[_pinArraySize];
+    _pinArray = new int[_pinArraySize];
+    for (int i = 0; i < _pinArraySize; i++) {
+      _pinArray[i] = pinArray[i];
+    }
   }
 
   ~SIL() {
@@ -51,12 +54,12 @@ class SIL {
       if (!_debounces[pin]) {
         if (_pinsState[pin]) {
           _debounces[pin] = true;
-          _evenQueue.push(SIL_Event(KEY_DOWN, pin, _pinArray[pin]));
+          enqueue(SIL_Event(KEY_DOWN, pin, _pinArray[pin]));
         }
       } else {
         if(!_pinsState[pin]) {
           _debounces[pin] = false;
-          _evenQueue.push(SIL_Event(KEY_UP, pin, _pinArray[pin]));
+          enqueue(SIL_Event(KEY_UP, pin, _pinArray[pin]));
         }
       }
     }
@@ -71,8 +74,6 @@ class SIL {
     }
   }
 
-
-
   private:
 
   int _pinArraySize;
@@ -80,5 +81,9 @@ class SIL {
   boolean* _pinsState;
   boolean* _debounces;
   QueueArray<SIL_Event> _evenQueue;
+
+  void enqueue(SIL_Event event) {
+    _evenQueue.push(event);
+  }
 
 };
