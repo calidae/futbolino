@@ -20,18 +20,18 @@ const int IR_THRESHOLD = 300;
 
 enum GameState
 {
-	SERVE,
-	PLAY,
-	WIN,
-	END,
-	PUTA
+  SERVE,
+  PLAY,
+  WIN,
+  END,
+  PUTA
 };
 
 enum Team
 {
-	UNDEFINED,
-	A,
-	B
+  UNDEFINED,
+  A,
+  B
 };
 
 const char TXT_END_A[] = "Final de partit. Verds guanyen!";
@@ -50,53 +50,55 @@ void callbackRestart();
 class Futbolino {
 
 public:
-	Futbolino(Inputs in, ScreenWrapper *screen);
+  Futbolino(Inputs in, ScreenWrapper *screen);
         ~Futbolino();
 
-	void begin();
-	void loop();
+  void begin();
+  void loop();
 
 private:
 
-	Inputs _in;
-	ScreenWrapper* _screen;
-	char _screenBufferA[SCREEN_BUF_SIZE];
-	char _screenBufferB[SCREEN_BUF_SIZE];
+  Inputs _in;
+  ScreenWrapper* _screen;
+  char _screenBufferA[SCREEN_BUF_SIZE];
+  char _screenBufferB[SCREEN_BUF_SIZE];
 
-	FutbolinoScreen* _screenA;
-	FutbolinoScreen* _screenB;
+  FutbolinoScreen* _screenA;
+  FutbolinoScreen* _screenB;
 
-	GameState _currentState;
-	Team _lastScored;
+  GameState _currentState;
+  Team _lastScored;
 
-	int _golsA = 0;
-	int _golsB = 0;
-        SIL* _buttons = NULL;
-	bool _debounceIrA = false;
-	bool _debounceIrB = false;
-	bool _debounceButtonPlusA = false;
-	bool _debounceButtonMinusA = false;
-	bool _debounceButtonPlusB = false;
-	bool _debounceButtonMinusB = false;
+  int _golsA = 0;
+  int _golsB = 0;
+  SIL* _buttons = NULL;
+  SIL_Sensor* _irA = NULL;
+  SIL_Sensor* _irB = NULL;
+  bool _debounceIrA = false;
+  bool _debounceIrB = false;
+  bool _debounceButtonPlusA = false;
+  bool _debounceButtonMinusA = false;
+  bool _debounceButtonPlusB = false;
+  bool _debounceButtonMinusB = false;
 
-	void addGoalA();
-	void addGoalB();
-	void subGoalA();
-	void subGoalB();
-	void manageScoreIncrement();
-	void showScoreInScreens();
-	void changeScore(int &team, int delta = 1);
-	void readButton(int &ir, bool &debounce);
-	struct Buttons readButtons();
-	void chooseServerTeam(Sensors s, Buttons b);
-	void updateFrom(Buttons b);
-	struct Sensors readIRSensors();
-	void updateFrom(Sensors s);
-	bool checkDebounce(bool &input, bool &debounce);
-	bool areAllButtonsPressed(Buttons b);
-	void resetScore();
+  void addGoalA();
+  void addGoalB();
+  void subGoalA();
+  void subGoalB();
+  void manageScoreIncrement();
+  void showScoreInScreens();
+  void changeScore(int &team, int delta = 1);
+  void readButton(int &ir, bool &debounce);
+  struct Buttons readButtons();
+  void chooseServerTeam(Sensors s, Buttons b);
+  void updateFrom(Buttons b);
+  struct Sensors readIRSensors();
+  void updateFrom(Sensors s);
+  bool checkDebounce(bool &input, bool &debounce);
+  bool areAllButtonsPressed(Buttons b);
+  void resetScore();
 
-	void updateScreen();
+  void updateScreen();
 
 };
 
