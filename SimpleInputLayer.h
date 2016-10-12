@@ -63,18 +63,20 @@ class SIL : public SIL_EventQueue {
     _pinArraySize = pinArraySize;
     _debounces = new boolean[_pinArraySize];
     _pinArray = new int[_pinArraySize];
-    for (int i = 0; i < _pinArraySize; i++) {
-      _pinArray[i] = pinArray[i];
+    for (int i = 0, pin = pinArray[0]; i < _pinArraySize; pin = pinArray[++i]) {
+      _pinArray[i] = pin;
+      _debounces[i] = digitalRead(pin);
     }
   }
 
   ~SIL() {
     delete[] _debounces;
+    delete [] _pinArray;
   }
 
   void update() {
-    for (int i = 0; i < _pinArraySize; i++) {
-      int pin = _pinArray[i];
+    for (int i = 0, pin = _pinArray[0]; i < _pinArraySize; pin = _pinArray[++i]) {
+
       _pinsState[pin] = digitalRead(pin);
 
       if (!_debounces[i]) {
