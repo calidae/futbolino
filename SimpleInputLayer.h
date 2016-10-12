@@ -13,18 +13,15 @@ class SIL_Event {
 
   SIL_Event() {
     this->type = NONE;
-    this->index = 0;
     this->pin = 0;
   }
 
-  SIL_Event(SIL_EventType type, int index, int pin) {
+  SIL_Event(SIL_EventType type, int pin) {
     this->type = type;
-    this->index = index;
     this->pin = pin;
   }
 
   SIL_EventType type;
-  int index;
   int pin;
 };
 
@@ -42,6 +39,12 @@ class SIL_EventQueue {
     }
   };
 
+  void clear() {
+    while (_evenQueue.isEmpty()) {
+      _evenQueue.pop();
+    }
+  }
+
   protected:
 
   QueueArray<SIL_Event> _evenQueue;
@@ -58,7 +61,6 @@ class SIL : public SIL_EventQueue {
 
   SIL(int pinArraySize, int* pinArray) {
     _pinArraySize = pinArraySize;
-    _pinsState = new boolean[_pinArraySize];
     _debounces = new boolean[_pinArraySize];
     _pinArray = new int[_pinArraySize];
     for (int i = 0; i < _pinArraySize; i++) {
@@ -67,33 +69,37 @@ class SIL : public SIL_EventQueue {
   }
 
   ~SIL() {
-    delete[] _pinsState;
     delete[] _debounces;
   }
 
   void update() {
-    for (int pin = 0; pin < _pinArraySize; pin++) {
-      _pinsState[pin] = digitalRead(_pinArray[pin]);
+    for (int i = 0; i < _pinArraySize; i++) {
+      int pin = _pinArray[i];
+      _pinsState[pin] = digitalRead(pin);
 
-      if (!_debounces[pin]) {
+      if (!_debounces[i]) {
         if (_pinsState[pin]) {
-          _debounces[pin] = true;
-          enqueue(SIL_Event(KEY_DOWN, pin, _pinArray[pin]));
+          _debounces[i] = true;
+          enqueue(SIL_Event(KEY_DOWN, pin));
         }
       } else {
         if(!_pinsState[pin]) {
-          _debounces[pin] = false;
-          enqueue(SIL_Event(KEY_UP, pin, _pinArray[pin]));
+          _debounces[i] = false;
+          enqueue(SIL_Event(KEY_UP, pin));
         }
       }
     }
+  }
+
+  boolean* getPinsState() {
+    return _pinsState;
   }
 
   private:
 
   int _pinArraySize;
   int* _pinArray;
-  boolean* _pinsState;
+  boolean _pinsState[20] = {false};
   boolean* _debounces;
 
 };
@@ -105,7 +111,7 @@ class SIL_Sensor : public SIL_EventQueue {
   SIL_Sensor(int pin, int threshold) {
     this->pin = pin;
     this->threshold = threshold;
-    debounce = analogRead(pin) < threshold;
+    debounce = analogRead(pin) > threshold;
   }
 
   void update() {
@@ -114,12 +120,12 @@ class SIL_Sensor : public SIL_EventQueue {
     if (!debounce) {
       if (reading > threshold) {
         debounce = true;
-        enqueue(SIL_Event(KEY_UP, 0, pin));
+        enqueue(SIL_Event(KEY_UP, pin));
       }
     } else {
       if(reading < threshold) {
         debounce = false;
-        enqueue(SIL_Event(KEY_DOWN, 0, pin));
+        enqueue(SIL_Event(KEY_DOWN, pin));
       }
     }
   }
