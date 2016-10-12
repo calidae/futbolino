@@ -40,7 +40,7 @@ class SIL_EventQueue {
   };
 
   void clear() {
-    while (_evenQueue.isEmpty()) {
+    while (!_evenQueue.isEmpty()) {
       _evenQueue.pop();
     }
   }

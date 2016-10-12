@@ -72,6 +72,7 @@ private:
   int _golsA = 0;
   int _golsB = 0;
   SIL* _buttons = NULL;
+  boolean* _pinsState = NULL;
   SIL_Sensor* _irA = NULL;
   SIL_Sensor* _irB = NULL;
 
@@ -85,7 +86,8 @@ private:
   void readButton(int &ir, bool &debounce);
   void chooseServerTeam(SIL_Event event);
   void update(SIL_Event event);
-  bool areAllButtonsPressed(Buttons b);
+  boolean areAllButtonsPressed();
+  boolean isAnyButtonPressed();
   void resetScore();
 
   void updateScreen();

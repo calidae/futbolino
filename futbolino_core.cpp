@@ -5,11 +5,12 @@ char* goal_texts[] = {"Gas", "Bo", "100", "Dins", "Inside", "Mel", "Nyam", "Oju!
 Futbolino::Futbolino(InputPins in, ScreenWrapper *screen) {
   int buttonPins[4] = {in.a_plus, in.a_minus, in.b_plus, in.b_minus};
   _buttons = new SIL(4, buttonPins);
+  _pinsState = _buttons->getPinsState();
   _irA = new SIL_Sensor(in.a_ir, IR_THRESHOLD);
   _irB = new SIL_Sensor(in.b_ir, IR_THRESHOLD);
   _inputPins = in;
-  _screen = screen;
 
+  _screen = screen;
   _screenA = new FutbolinoScreen(_screen, 0);
   _screenB = new FutbolinoScreen(_screen, 1);
 }
@@ -34,6 +35,14 @@ void Futbolino::loop() {
   _buttons->update();
   _irA->update();
   _irB->update();
+
+  if (areAllButtonsPressed()) {
+    do {
+      _buttons->update();
+      _buttons->clear();
+    } while (isAnyButtonPressed());
+    begin();
+  }
 
   for (SIL_Event event;
       _buttons->pollEvent(&event)
@@ -84,14 +93,22 @@ void Futbolino::update(SIL_Event event){
   }
 }
 
-// void Futbolino::updateFrom(Buttons b){
-//   if (areAllButtonsPressed(b)){
-//     begin();
-//   }
-// }
+boolean Futbolino::areAllButtonsPressed(){
+  return (
+    _pinsState[_inputPins.a_plus]
+    && _pinsState[_inputPins.a_minus]
+    && _pinsState[_inputPins.b_plus]
+    && _pinsState[_inputPins.b_minus]
+  );
+}
 
-bool Futbolino::areAllButtonsPressed(Buttons b){
-  return (b.plusA && b.minusA && b.plusB && b.minusB);
+boolean Futbolino::isAnyButtonPressed(){
+  return (
+    _pinsState[_inputPins.a_plus]
+    || _pinsState[_inputPins.a_minus]
+    || _pinsState[_inputPins.b_plus]
+    || _pinsState[_inputPins.b_minus]
+  );
 }
 
 void Futbolino::resetScore(){
