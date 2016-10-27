@@ -24,12 +24,12 @@ const int DATA_PIN = 11;
 const int CS_PIN = 10;
 
 ScreenWrapper* setupScreen() {
-  MD_Parola ledMatrix = new MD_Parola(DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
-  ledMatrix.begin(TOTAL_SCREENS);
-  ledMatrix.setInvert(false);
-  ledMatrix.setZone(0, FIRST_SCREEN_START, FIRST_SCREEN_END);
-  ledMatrix.setZone(1, SECOND_SCREEN_START, SECOND_SCREEN_END);
-  ScreenWrapper* screenWrapper = new LedMatrixWrapper(&ledMatrix);
+  MD_Parola* ledMatrix = new MD_Parola(DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
+  ledMatrix->begin(TOTAL_SCREENS);
+  ledMatrix->setInvert(false);
+  ledMatrix->setZone(0, FIRST_SCREEN_START, FIRST_SCREEN_END);
+  ledMatrix->setZone(1, SECOND_SCREEN_START, SECOND_SCREEN_END);
+  ScreenWrapper* screenWrapper = new LedMatrixWrapper(ledMatrix);
   return screenWrapper;
 }
 
