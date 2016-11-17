@@ -133,11 +133,13 @@ void Futbolino::addGoalB(){
 void Futbolino::subGoalA(){
   changeScore(_golsA, -1);
   showScoreInScreens();
+  manageScoreDecrement();
 }
 
 void Futbolino::subGoalB(){
   changeScore(_golsB, -1);
   showScoreInScreens();
+  manageScoreDecrement();
 }
 
 void Futbolino::manageScoreIncrement(){
@@ -183,6 +185,12 @@ void Futbolino::manageScoreIncrement(){
 
   if (_golsA == 5 && _golsB == 5) {
     _currentState = PUTA;
+  }
+}
+
+void Futbolino::manageScoreDecrement(){
+  if (_currentState == PUTA) {
+    _currentState = PLAY;
   }
 }
 

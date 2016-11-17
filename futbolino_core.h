@@ -42,7 +42,7 @@ const char TXT_LOOSE[] = "     A plorar";
 const char TXT_SERVE[] = "Saque";
 const char TXT_FIRSTBALL_A[] = "Verds saquen";
 const char TXT_FIRSTBALL_B[] = "Blancs saquen";
-const char TXT_PUTA[] = "5 - 5";
+const char TXT_PUTA[] = "PUTA";
 
 
 void callbackRestart();
@@ -81,6 +81,7 @@ private:
   void subGoalA();
   void subGoalB();
   void manageScoreIncrement();
+  void manageScoreDecrement();
   void showScoreInScreens();
   void changeScore(int &team, int delta = 1);
   void readButton(int &ir, bool &debounce);

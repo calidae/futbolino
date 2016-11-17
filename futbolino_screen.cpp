@@ -25,21 +25,25 @@ void FutbolinoScreen::update(bool animationFinished){
 
 void FutbolinoScreen::setStaticText(char* text){
 	_animating = false;
+	_screen->setIntensity(_zone, 15);
 	_screen->displayZoneText(_zone, text, CENTER, 20, 0, FADE, NO_EFFECT);
 }
 
 void FutbolinoScreen::setAnimation(char* text){
 	_animating = true;
+	_screen->setIntensity(_zone, 15);
 	_screen->displayZoneText(_zone, text, CENTER, ANIMATION_SPEED, 0, SCROLL_LEFT, SCROLL_LEFT);
 }
 
 void FutbolinoScreen::setShortAnimation(char* text){
 	_animating = true;
+	_screen->setIntensity(_zone, 15);
 	_screen->displayZoneText(_zone, text, CENTER, SHORT_ANIMATION_SPEED, SHORT_ANIMATION_PAUSE, MESH, FADE);
 }
 
 void FutbolinoScreen::blinkAnimation(char* text){
 	_animating = true;
+	_screen->setIntensity(_zone, 15);
 	_screen->displayZoneText(_zone, text, CENTER, SHORT_ANIMATION_SPEED, SHORT_ANIMATION_PAUSE, FADE, FADE);
 }
 

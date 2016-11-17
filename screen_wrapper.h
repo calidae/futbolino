@@ -5,6 +5,7 @@
 
 class ScreenWrapper {
 public:
+  virtual void setIntensity(int, int) = 0;
   virtual bool getZoneStatus(int zone) = 0;
   virtual bool displayAnimate() = 0;
   virtual void displayZoneText(
@@ -26,6 +27,10 @@ public:
   virtual bool displayAnimate() {
       return _screen->displayAnimate();
   };
+
+  virtual void setIntensity(int zone, int intensity){
+      _screen->setIntensity(zone, intensity);
+  }
 
   virtual void displayZoneText(
       uint8_t z, char *pText, textPosition_t align, uint16_t speed, uint16_t pause,
@@ -54,6 +59,9 @@ public:
       return true;
   };
 
+  virtual void setIntensity(int zone, int intensity){
+  }
+
   virtual void displayZoneText(
       uint8_t z, char *pText, textPosition_t align, uint16_t speed, uint16_t pause,
       textEffect_t effectIn, textEffect_t effectOut = NO_EFFECT
@@ -80,6 +88,9 @@ public:
   virtual bool displayAnimate() {
       return true;
   };
+
+  virtual void setIntensity(int zone, int intensity){
+  }
 
   virtual void displayZoneText(
       uint8_t z, char *pText, textPosition_t align, uint16_t speed, uint16_t pause,
